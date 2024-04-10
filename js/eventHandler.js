@@ -9,9 +9,10 @@ function multipleSelectedItems(li){
         item.classList.remove('selected');
     }
     li.classList.add('selected');
+    return li.innerText;
 }
 
-function shiftSelection(li){
+function shiftSelection(anchor, li){
     const nodeListOfAllItems = document.querySelectorAll('li');
     const arrayofListItems = Array.from(nodeListOfAllItems);
     
@@ -19,7 +20,7 @@ function shiftSelection(li){
     let toIndex;
 
     for(const index in arrayofListItems){
-        if( arrayofListItems[index].className === "selected"){
+        if( arrayofListItems[index]. innerText === anchor){
             indexOfSelectedItem = index;
         }
 
@@ -45,14 +46,17 @@ function shiftSelection(li){
 }
 
 const myList = document.querySelector("#myList");
+let anchorElement = ""; // When the page loads no list element are selected
+
 myList.onclick = (event) => {
     if ( event.target.tagName != "LI" ) return;
 
     if( event.ctrlKey || event.metaKey ){
         toggleSelectedCSSClass(event.target);
     } else if ( event.shiftKey ){
-        shiftSelection(event.target);
+        shiftSelection(anchorElement,event.target);
+        return 'false';
     } else {
-        multipleSelectedItems(event.target);
+        anchorElement = multipleSelectedItems(event.target);
     }
 };
